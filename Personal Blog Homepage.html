@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Blog Homepage | Task-4</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --primary: #FF6B6B;
+            --primary-dark: #EE5A52;
+            --secondary: #4ECDC4;
+            --accent: #FFD166;
+            --dark: #1A1A2E;
+            --light: #F7F9FC;
+            --gray: #6C757D;
+            --gray-light: #E9ECEF;
+            --card-bg: #FFFFFF;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --gradient-light: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 35px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--dark);
+            color: white;
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 5rem 0;
+            background: var(--dark);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 190%; 
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 200" preserveAspectRatio="none"><path d="M0,0 Q500,200 1000,0 L1000,200 L0,200 Z" fill="%23F7F9FC"/></svg>');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: bottom;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+        }
+
+        /* Controls Section */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--gray-light);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-btn:hover {
+            background: var(--gray-light);
+            transform: translateY(-3px);
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Blog Posts Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .blog-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-image {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .blog-card:hover .card-image {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.8rem;
+        }
+
+        .card-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            line-height: 1.3;
+        }
+
+        .card-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--gray-light);
+            padding-top: 1.2rem;
+        }
+
+        .card-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .read-more:hover {
+            color: var(--primary-dark);
+            gap: 12px;
+        }
+
+        /* Featured Post */
+        .featured-post {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .featured-post .card-image {
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 2.5rem;
+        }
+
+        .featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: var(--dark);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            width: fit-content;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 12px;
+        }
+
+        .page-btn {
+            padding: 12px 20px;
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .page-btn:hover {
+            background: var(--gray-light);
+            transform: translateY(-3px);
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: var(--gradient-light);
+            color: var(--dark);
+            padding: 5rem 0;
+            margin-top: 5rem;
+            text-align: center;
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0,0 Q500,80 1000,0 L1000,100 L0,100 Z" fill="%23FFFFFF" opacity="0.2"/></svg>');
+            background-size: 100% auto;
+            background-repeat: no-repeat;
+            background-position: top;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .newsletter-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 2rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 16px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.8);
+            transition: var(--transition);
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+
+        .newsletter-btn {
+            padding: 16px 32px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .newsletter-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 5rem 0 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 12px;
+            color: var(--primary);
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            gap: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray-light);
+        }
+
+        .empty-state h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 107, 107, 0.2);
+            border-left: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .featured-post {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-post .card-image {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .category-filter {
+                justify-content: center;
+            }
+
+            .blog-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // Sample blog data
+        const blogPosts = [
+            {
+                id: 1,
+                title: "Getting Started with React Hooks",
+                category: "Tech",
+                description: "Learn how to use React Hooks to simplify your functional components and manage state effectively in modern web development.",
+                date: "2023-10-15",
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "5 min read",
+                featured: true
+            },
+            {
+                id: 2,
+                title: "My Journey Through Southeast Asia",
+                category: "Travel",
+                description: "Exploring the beautiful landscapes, cultures, and cuisines of Thailand, Vietnam, and Cambodia in a 30-day adventure.",
+                date: "2023-09-22",
+                image: "https://images.unsplash.com/photo-1528181304800-259b08848526?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "7 min read"
+            },
+            {
+                id: 3,
+                title: "The Perfect Homemade Pizza Recipe",
+                category: "Food",
+                description: "Discover the secrets to making restaurant-quality pizza right in your own kitchen with this step-by-step guide.",
+                date: "2023-10-05",
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "4 min read"
+            },
+            {
+                id: 4,
+                title: "Understanding CSS Grid Layout",
+                category: "Tech",
+                description: "A comprehensive guide to mastering CSS Grid for creating modern, responsive web layouts with practical examples.",
+                date: "2023-09-18",
+                image: "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "6 min read"
+            },
+            {
+                id: 5,
+                title: "Hiking the Swiss Alps",
+                category: "Travel",
+                description: "My unforgettable experience hiking through the breathtaking landscapes of the Swiss Alps during summer.",
+                date: "2023-08-30",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMRSkCed8xiQAjxG3I2aDzdWQS718fY-UccQ&s",
+                readTime: "8 min read"
+            },
+            {
+                id: 6,
+                title: "Vegan Baking: Delicious Desserts Without Dairy",
+                category: "Food",
+                description: "Explore the world of vegan baking with these delicious and easy-to-make dessert recipes that everyone will love.",
+                date: "2023-10-10",
+                image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "5 min read"
+            },
+            {
+                id: 7,
+                title: "Introduction to Machine Learning Concepts",
+                category: "Tech",
+                description: "A beginner-friendly introduction to the fundamental concepts and applications of machine learning in today's world.",
+                date: "2023-09-05",
+                image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "10 min read"
+            },
+            {
+                id: 8,
+                title: "Exploring Japanese Culture and Traditions",
+                category: "Travel",
+                description: "Immersing myself in the rich culture, traditions, and history of Japan during my three-week journey through Tokyo, Kyoto, and Osaka.",
+                date: "2023-08-15",
+                image: "https://images.unsplash.com/photo-1540959733332-7d6d4dfc8d93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "9 min read"
+            },
+            {
+                id: 9,
+                title: "Mastering the Art of French Cooking",
+                category: "Food",
+                description: "Learning traditional French cooking techniques and recipes from a master chef during my culinary journey in Paris.",
+                date: "2023-10-01",
+                image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                readTime: "7 min read"
+            }
+        ];
+
+        const categories = [
+            { name: "All", icon: "fa-layer-group" },
+            { name: "Tech", icon: "fa-laptop-code" },
+            { name: "Travel", icon: "fa-plane" },
+            { name: "Food", icon: "fa-utensils" }
+        ];
+
+        function BlogCard({ post, isFeatured = false }) {
+            if (isFeatured) {
+                return (
+                    <div className="featured-post">
+                        <img src={post.image} alt={post.title} className="card-image" />
+                        <div className="featured-content">
+                            <span className="featured-badge">
+                                <i className="fas fa-star"></i> Featured Post
+                            </span>
+                            <span className="card-category">
+                                <i className={`fas ${categories.find(c => c.name === post.category).icon}`}></i>
+                                {post.category}
+                            </span>
+                            <h2 className="card-title">{post.title}</h2>
+                            <p className="card-description">{post.description}</p>
+                            <div className="card-footer">
+                                <span className="card-date">
+                                    <i className="far fa-calendar"></i> {post.date} • <i className="far fa-clock"></i> {post.readTime}
+                                </span>
+                                <a href="#" className="read-more">
+                                    Read Article <i className="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="blog-card" style={{ animationDelay: `${post.id * 0.1}s` }}>
+                    <img src={post.image} alt={post.title} className="card-image" />
+                    <div className="card-content">
+                        <span className="card-category">
+                            <i className={`fas ${categories.find(c => c.name === post.category).icon}`}></i>
+                            {post.category}
+                        </span>
+                        <h3 className="card-title">{post.title}</h3>
+                        <p className="card-description">{post.description}</p>
+                        <div className="card-footer">
+                            <span className="card-date">
+                                <i className="far fa-calendar"></i> {post.date} • <i className="far fa-clock"></i> {post.readTime}
+                            </span>
+                            <a href="#" className="read-more">
+                                Read More <i className="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function BlogHomepage() {
+            const [posts, setPosts] = useState([]);
+            const [filteredPosts, setFilteredPosts] = useState([]);
+            const [activeCategory, setActiveCategory] = useState("All");
+            const [searchQuery, setSearchQuery] = useState("");
+            const [currentPage, setCurrentPage] = useState(1);
+            const [isLoading, setIsLoading] = useState(true);
+            const postsPerPage = 6;
+
+            // Simulate data loading
+            useEffect(() => {
+                const timer = setTimeout(() => {
+                    setPosts(blogPosts);
+                    setIsLoading(false);
+                }, 1200);
+                return () => clearTimeout(timer);
+            }, []);
+
+            // Filter posts based on category and search query
+            useEffect(() => {
+                let filtered = posts;
+                
+                // Filter by category
+                if (activeCategory !== "All") {
+                    filtered = filtered.filter(post => post.category === activeCategory);
+                }
+                
+                // Filter by search query
+                if (searchQuery) {
+                    filtered = filtered.filter(post => 
+                        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        post.description.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
+                }
+                
+                setFilteredPosts(filtered);
+                setCurrentPage(1); // Reset to first page when filters change
+            }, [activeCategory, searchQuery, posts]);
+
+            // Calculate pagination
+            const indexOfLastPost = currentPage * postsPerPage;
+            const indexOfFirstPost = indexOfLastPost - postsPerPage;
+            const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+            const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+            const handleCategoryChange = (category) => {
+                setActiveCategory(category);
+            };
+
+            const handleSearchChange = (e) => {
+                setSearchQuery(e.target.value);
+            };
+
+            const handlePageChange = (pageNumber) => {
+                setCurrentPage(pageNumber);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const featuredPost = posts.find(post => post.featured);
+
+            return (
+                <div>
+                    <header>
+                        <div className="container">
+                            <div className="header-content">
+                                <div className="logo">
+                                    <i className="fas fa-compass logo-icon"></i>
+                                    <span className="logo-text">Wanderlust & Code</span>
+                                </div>
+                                <nav className="nav-links">
+                                    <a href="#" className="nav-link">Home</a>
+                                    <a href="#" className="nav-link">Blog</a>
+                                    <a href="#" className="nav-link">About</a>
+                                    <a href="#" className="nav-link">Contact</a>
+                                </nav>
+                                <button className="mobile-menu-btn">
+                                    <i className="fas fa-bars"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <section className="hero">
+                        <div className="container">
+                            <div className="hero-content">
+                                <h1 className="hero-title">Explore. Create. Inspire.</h1>
+                                <p className="hero-subtitle">
+                                    A personal blog sharing journeys through technology, travel, and culinary adventures. 
+                                    Join me as I explore the world and document my experiences.
+                                </p>
+                                <a href="#" className="cta-button">Explore Latest Posts</a>
+                                <div className="hero-stats">
+                                    <div className="stat">
+                                        <span className="stat-number">42</span>
+                                        <div className="stat-label">Articles</div>
+                                    </div>
+                                    <div className="stat">
+                                        <span className="stat-number">15</span>
+                                        <div className="stat-label">Countries</div>
+                                    </div>
+                                    <div className="stat">
+                                        <span className="stat-number">3</span>
+                                        <div className="stat-label">Categories</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <main className="container">
+                        <section className="controls">
+                            <div className="search-box">
+                                <i className="fas fa-search search-icon"></i>
+                                <input 
+                                    type="text" 
+                                    placeholder="Search blog posts..." 
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                />
+                            </div>
+                            <div className="category-filter">
+                                {categories.map(category => (
+                                    <button
+                                        key={category.name}
+                                        className={`category-btn ${activeCategory === category.name ? 'active' : ''}`}
+                                        onClick={() => handleCategoryChange(category.name)}
+                                    >
+                                        <i className={`fas ${category.icon}`}></i>
+                                        {category.name}
+                                    </button>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="blog-grid">
+                            {isLoading ? (
+                                <div className="loading">
+                                    <div className="spinner"></div>
+                                </div>
+                            ) : currentPosts.length > 0 ? (
+                                <>
+                                    {currentPage === 1 && featuredPost && (
+                                        <BlogCard post={featuredPost} isFeatured={true} />
+                                    )}
+                                    {currentPosts
+                                        .filter(post => !post.featured || currentPage !== 1)
+                                        .map(post => (
+                                            <BlogCard key={post.id} post={post} />
+                                        ))
+                                    }
+                                </>
+                            ) : (
+                                <div className="empty-state">
+                                    <i className="fas fa-search"></i>
+                                    <h3>No posts found</h3>
+                                    <p>Try changing your search or filter criteria</p>
+                                </div>
+                            )}
+                        </section>
+
+                        {filteredPosts.length > postsPerPage && (
+                            <section className="pagination">
+                                <button 
+                                    className="page-btn"
+                                    disabled={currentPage === 1}
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                >
+                                    <i className="fas fa-chevron-left"></i> Previous
+                                </button>
+                                
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                                    <button
+                                        key={page}
+                                        className={`page-btn ${currentPage === page ? 'active' : ''}`}
+                                        onClick={() => handlePageChange(page)}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
+                                
+                                <button 
+                                    className="page-btn"
+                                    disabled={currentPage === totalPages}
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                >
+                                    Next <i className="fas fa-chevron-right"></i>
+                                </button>
+                            </section>
+                        )}
+                    </main>
+
+                    <footer>
+                        <div className="container">
+                            <div className="footer-content">
+                                <div className="footer-column">
+                                    <h3>Wanderlust & Code</h3>
+                                    <p>A personal blog sharing journeys through technology, travel, and culinary adventures.</p>
+                                    <div className="social-links">
+                                        <a href="#" className="social-link"><i className="fab fa-twitter"></i></a>
+                                        <a href="#" className="social-link"><i className="fab fa-instagram"></i></a>
+                                        <a href="#" className="social-link"><i className="fab fa-github"></i></a>
+                                        <a href="#" className="social-link"><i className="fab fa-linkedin-in"></i></a>
+                                    </div>
+                                </div>
+                                <div className="footer-column">
+                                    <h3>Categories</h3>
+                                    <ul className="footer-links">
+                                        <li><a href="#"><i className="fas fa-laptop-code"></i> Technology</a></li>
+                                        <li><a href="#"><i className="fas fa-plane"></i> Travel</a></li>
+                                        <li><a href="#"><i className="fas fa-utensils"></i> Food</a></li>
+                                        <li><a href="#"><i className="fas fa-pen-fancy"></i> Lifestyle</a></li>
+                                    </ul>
+                                </div>
+                                <div className="footer-column">
+                                    <h3>Quick Links</h3>
+                                    <ul className="footer-links">
+                                        <li><a href="#"><i className="fas fa-home"></i> Home</a></li>
+                                        <li><a href="#"><i className="fas fa-user"></i> About</a></li>
+                                        <li><a href="#"><i className="fas fa-envelope"></i> Contact</a></li>
+                                        <li><a href="#"><i className="fas fa-lock"></i> Privacy Policy</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="footer-bottom">
+                                <p>&copy; 2025 Personal Blog Homepage. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<BlogHomepage />, document.getElementById('root'));
+    </script>
+</body>
+</html>
